@@ -68,30 +68,33 @@ export class ListBlockComponent extends BlockElement<ListBlockModel> {
     bindContainerHotkey(this);
   }
 
-  override render() {
-    const { deep, index } = getListInfo(this.model);
-    const { model, showChildren, _onClickIcon } = this;
-    const listIcon = ListIcon(model, index, deep, showChildren, _onClickIcon);
-
+  private _toggleTemplate() {
     const toggleChildren = () => (this.showChildren = !this.showChildren);
     const noChildren = this.model.children.length === 0;
     const toggleDownTemplate = html`<div
       class="toggle-icon"
       @click=${toggleChildren}
     >
-      ${toggleDown()}
+      ${toggleDown}
     </div>`;
     const toggleRightTemplate = html`<div
       class="toggle-icon toggle-icon__collapsed"
       @click=${toggleChildren}
     >
-      ${toggleRight()}
+      ${toggleRight}
     </div>`;
     const toggleIcon = noChildren
       ? nothing
       : this.showChildren
       ? toggleDownTemplate
       : toggleRightTemplate;
+    return toggleIcon;
+  }
+
+  override render() {
+    const { deep, index } = getListInfo(this.model);
+    const { model, showChildren, _onClickIcon } = this;
+    const listIcon = ListIcon(model, index, deep, showChildren, _onClickIcon);
 
     // For the first list item, we need to add a margin-top to make it align with the text
     const shouldAddMarginTop = index === 0 && deep === 0;
@@ -107,17 +110,18 @@ export class ListBlockComponent extends BlockElement<ListBlockModel> {
     return html`
       <div class=${`affine-list-block-container ${top}`}>
         <div class="affine-list-rich-text-wrapper">
-          ${toggleIcon} ${listIcon}
-          <rich-text
-            .model=${this.model}
-            .textSchema=${this.textSchema}
-          ></rich-text>
-          ${when(
-            this.selected?.is('block'),
-            () => html`<affine-block-selection></affine-block-selection>`
-          )}
+        ${this._toggleTemplate()} ${listIcon}
+            <rich-text
+              .model=${this.model}
+              .textSchema=${this.textSchema}
+            ></rich-text>
+            ${when(
+              this.selected?.is('block'),
+              () => html`<affine-block-selection></affine-block-selection>`
+            )}
+          </div>
+          ${this.showChildren ? children : nothing}
         </div>
-        ${this.showChildren ? children : nothing}
       </div>
     `;
   }

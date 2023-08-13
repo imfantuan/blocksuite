@@ -347,7 +347,6 @@ export function handleUnindent(
     }
   }
 
-  assertExists(model);
   asyncSetVRange(model, { index: offset, length: 0 });
 }
 
