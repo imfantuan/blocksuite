@@ -3,7 +3,7 @@ import {
   type UIEventHandler,
   type UIEventStateContext,
 } from '@blocksuite/block-std';
-import { assertExists } from '@blocksuite/global/utils';
+import { assertExists, matchFlavours } from '@blocksuite/global/utils';
 import type { BlockElement } from '@blocksuite/lit';
 import { WidgetElement } from '@blocksuite/lit';
 import type { BaseBlockModel } from '@blocksuite/store';
@@ -126,9 +126,17 @@ export class DragHandleWidget extends WidgetElement {
       DRAG_HANDLE_WIDTH * this._scale
     }px`;
 
+    const model = blockElement.model;
+    const extraXOffset =
+      // Prevent drag handle cover the list toggle button
+      matchFlavours(model, ['affine:list']) && model.children.length !== 0
+        ? 16
+        : 0;
     // TODO: optimize drag handle position with different hover block
     const posLeft =
-      left - (DRAG_HANDLE_WIDTH + DRAG_HANDLE_OFFSET_LEFT) * this._scale;
+      left -
+      (DRAG_HANDLE_WIDTH + DRAG_HANDLE_OFFSET_LEFT + extraXOffset) *
+        this._scale;
     const posTop = top;
     this._dragHandleContainer.style.left = `${posLeft}px`;
     this._dragHandleContainer.style.top = `${posTop}px`;
