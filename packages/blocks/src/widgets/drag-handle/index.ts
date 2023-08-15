@@ -3,7 +3,7 @@ import {
   type UIEventHandler,
   type UIEventStateContext,
 } from '@blocksuite/block-std';
-import { assertExists, matchFlavours } from '@blocksuite/global/utils';
+import { assertExists } from '@blocksuite/global/utils';
 import type { BlockElement } from '@blocksuite/lit';
 import { WidgetElement } from '@blocksuite/lit';
 import type { BaseBlockModel } from '@blocksuite/store';
@@ -20,6 +20,7 @@ import {
   getClosestBlockElementByPoint,
   getModelByBlockElement,
   isPageMode,
+  matchFlavours,
   Point,
   Rect,
 } from '../../__internal__/index.js';
