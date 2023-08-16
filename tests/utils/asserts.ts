@@ -17,7 +17,10 @@ import {
   plugins as prettyFormatPlugins,
 } from 'pretty-format';
 
-import { EDITOR_WIDTH } from '../../packages/blocks/src/__internal__/consts.js';
+import {
+  EDGELESS_BLOCK_CHILD_PADDING,
+  EDITOR_WIDTH,
+} from '../../packages/blocks/src/__internal__/consts.js';
 import type { RichText } from '../../packages/playground/examples/virgo/test-page.js';
 import {
   PAGE_VERSION,
@@ -97,7 +100,9 @@ export const defaultStore: SerializedStore = {
           'sys:flavour': 'affine:note',
           'sys:id': '1',
           'sys:children': ['2'],
-          'prop:xywh': `[0,0,${EDITOR_WIDTH},91]`,
+          'prop:xywh': `[0,0,${EDITOR_WIDTH},${
+            43 + EDGELESS_BLOCK_CHILD_PADDING * 2
+          }]`,
           'prop:background': '--affine-background-secondary-color',
           'prop:index': 'a0',
           'prop:hidden': false,
